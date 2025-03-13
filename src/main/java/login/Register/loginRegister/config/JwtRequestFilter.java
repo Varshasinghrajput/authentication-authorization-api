@@ -22,7 +22,7 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
 
     @Autowired
     private JwtHelper jwtHelper;
@@ -36,12 +36,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
+
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwt = authHeader.substring(7);
+            jwt = authHeader.replace("Bearer ", "").trim();  // ✅ Completely remove "Bearer "
+            logger.info("Final Clean JWT (Without Bearer): {}", jwt);
+        }
+
+    // Ensure that only the JWT token is passed to JwtHelper
+        if (jwt != null && !jwt.isEmpty()) {
             try {
-                username = jwtHelper.extractUsername(jwt);
-            }catch (IllegalArgumentException | ExpiredJwtException e) {
-                System.out.println("Jwt token error : " + e.getMessage());
+                 username = jwtHelper.extractUsername(jwt); // ✅ Now correctly passing only the token
+                logger.info("Extracted Username from JWT: {}", username);
+            } catch (Exception e) {
+                logger.error("JWT Parsing Error: {}", e.getMessage());
             }
         }
 
@@ -49,14 +57,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtHelper.validateToken(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                logger.info("Validation fails !!");
+                logger.info("JWT validation failed!");
             }
         }
         filterChain.doFilter(request, response);
     }
-
 }
+

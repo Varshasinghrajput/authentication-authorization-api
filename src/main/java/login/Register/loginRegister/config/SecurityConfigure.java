@@ -41,10 +41,12 @@ public class SecurityConfigure {
         http
                 .csrf(csrf-> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("admin/**").hasRole("ADMIN")
-                        .requestMatchers("user/**").hasRole("USER")
-                        .requestMatchers("agent/**").hasRole("AGENT")
+                        .requestMatchers("/auth/**").permitAll() // login/register open to all
+                        .requestMatchers("/client/**").hasRole("Agent") //only agent
+                        .requestMatchers("/images/upload").authenticated()
+                        .requestMatchers("/admin/**").hasRole("Admin")
+                        .requestMatchers("/agent/**").hasAnyRole("Agent", "Admin")
+                        .requestMatchers("/client/**").hasAnyRole("Client", "Agent", "Admin")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

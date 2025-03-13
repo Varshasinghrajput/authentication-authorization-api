@@ -50,9 +50,5 @@ public class UserController {
         return userService.login(requestData);
     }
 
-//    @PostMapping("/auth/addClient")
-//    public AgentResponse addClient(@RequestBody AgentRequest agentRequest) {
-//        return clientService.addClientByAgent(agentRequest);
-//    }
 
 }

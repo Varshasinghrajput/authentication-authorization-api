@@ -20,7 +20,7 @@ public class Client {
     private String name;
 
     @Column(unique = true)
-    private String MobileNo;
+    private String mobileNo;
 
     @Column( nullable = false)
     private String address;
@@ -36,4 +36,8 @@ public class Client {
 
 
     private LocalDate loanDate;
+
+    @ManyToOne
+    @JoinColumn(name = "agent_id", nullable = false)  // Linking Client to Agent (User)
+    private Users agent;
 }

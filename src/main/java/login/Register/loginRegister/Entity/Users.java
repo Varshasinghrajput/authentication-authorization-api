@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.aspectj.weaver.loadtime.Agent;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -38,69 +39,34 @@ public class Users implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
 
     @Override
     public String getPassword() {
-        return "";
+        return this.pinCode;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return this.mobileNo;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-//    public Users() {
-//    this.role = Roles.Agent;
-//    }
-//
-//    public Users(String name, String password, String email) {
-//        this.name = name;
-//        this.password = password;
-//        this.email = email;
-//    }
-//
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
+//    @Override
+//    public boolean isAccountNonLocked() { return true; }
 //
 //    @Override
-//    public String toString() {
-//        return "Users{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", password='" + password + '\'' +
-//                ", email='" + email + '\'' +
-//                '}';
-//    }
+//    public boolean isCredentialsNonExpired() { return true; }
+//
+//    @Override
+//    public boolean isEnabled() { return true; }
+
+
+
+
 }
