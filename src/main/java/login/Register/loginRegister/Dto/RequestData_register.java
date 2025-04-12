@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestData {
+public class RequestData_register {
     private String name;
     private String mobileNo;
     private String pinCode;

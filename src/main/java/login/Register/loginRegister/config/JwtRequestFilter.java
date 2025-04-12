@@ -39,14 +39,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwt = authHeader.replace("Bearer ", "").trim();  // ✅ Completely remove "Bearer "
+            jwt = authHeader.replace("Bearer ", "").trim();  //  Completely remove "Bearer "
             logger.info("Final Clean JWT (Without Bearer): {}", jwt);
         }
 
     // Ensure that only the JWT token is passed to JwtHelper
         if (jwt != null && !jwt.isEmpty()) {
             try {
-                 username = jwtHelper.extractUsername(jwt); // ✅ Now correctly passing only the token
+                 username = jwtHelper.extractUsername(jwt); // Now correctly passing only the token
                 logger.info("Extracted Username from JWT: {}", username);
             } catch (Exception e) {
                 logger.error("JWT Parsing Error: {}", e.getMessage());

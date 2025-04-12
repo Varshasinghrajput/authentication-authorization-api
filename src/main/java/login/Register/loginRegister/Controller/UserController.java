@@ -1,16 +1,12 @@
 package login.Register.loginRegister.Controller;
 
-import login.Register.loginRegister.Dto.AgentRequest;
-import login.Register.loginRegister.Dto.AgentResponse;
-import login.Register.loginRegister.Dto.RequestData;
-import login.Register.loginRegister.Dto.ResponseData;
-import login.Register.loginRegister.Service.ClientService;
+import login.Register.loginRegister.Dto.RequestData_register;
+import login.Register.loginRegister.Dto.ResponseData_register;
 import login.Register.loginRegister.Service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 @NoArgsConstructor
@@ -39,13 +35,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseData> register(@RequestBody RequestData requestData) {
+    public ResponseEntity<ResponseData_register> register(@RequestBody RequestData_register requestData) {
 
         return userService.register(requestData);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseData> login(@RequestBody RequestData requestData) {
+    public ResponseEntity<ResponseData_register> login(@RequestBody RequestData_register requestData) {
 
         return userService.login(requestData);
     }

@@ -37,6 +37,8 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private Roles role;
 
+    private boolean isActive = false; // user is inactive after registration
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
@@ -52,10 +54,10 @@ public class Users implements UserDetails {
         return this.mobileNo;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
 
 //    @Override
 //    public boolean isAccountNonLocked() { return true; }

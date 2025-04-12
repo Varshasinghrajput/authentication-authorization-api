@@ -6,13 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.management.relation.Role;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseData {
+public class ResponseData_register {
     private String mobileNumber;
     private String name;
     private Roles role;

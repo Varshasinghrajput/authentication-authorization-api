@@ -2,8 +2,10 @@ package login.Register.loginRegister.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.aspectj.weaver.loadtime.Agent;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Setter
 @Getter
@@ -38,6 +40,18 @@ public class Client {
     private LocalDate loanDate;
 
     @ManyToOne
-    @JoinColumn(name = "agent_id", nullable = false)  // Linking Client to Agent (User)
+    @JoinColumn(name = "agent_id", nullable = false)  // Linking Client to Agent (User) / one agent has multiple clients
     private Users agent;
+
+    @Column(nullable = false)
+    private String agentMobileNo;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL) // one client have multiple EMIs
+    private List<EMI> emis; //EMI list linked with this client.
+
+
+    //@OneToMany	One client → many EMIs
+    //mappedBy = "client"	Relationship is owned by EMI class via its client field
+    //cascade = CascadeType.ALL	Save/delete on client will also save/delete all related EMIs automatically
+
 }

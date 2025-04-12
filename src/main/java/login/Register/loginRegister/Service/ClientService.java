@@ -30,6 +30,9 @@ public class ClientService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EMIService emiService;
+
 
 
     @Transactional
@@ -41,7 +44,7 @@ public class ClientService {
                 .orElseThrow(() -> new RuntimeException("Agent not found"));
 
         // If user is not an Agent, return HTTP 403 (Forbidden)
-        if (!agent.getRole().equals(login.Register.loginRegister.Enum.Roles.Agent)) {
+        if (!agent.getRole().equals(login.Register.loginRegister.Enum.Roles.AGENT)) {
             logger.error("Unauthorized Access: User {} is not an Agent", agent.getMobileNo());
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new AgentResponse(null, null, null, 0, 0, 0, null, false, "Unauthorized access: This user is not an Agent"));
@@ -57,8 +60,11 @@ public class ClientService {
         client.setInterestRate(agentRequest.getInterestRate());
         client.setLoanDate(LocalDate.now());
         client.setAgent(agent);
+        client.setAgentMobileNo(agentMobileNo);
 
-        Client savedClient = clientRepository.save(client);
+        Client savedClient = clientRepository.save(client); // first save client
+
+        emiService.generateEMI(savedClient);
 
         return ResponseEntity.status(HttpStatus.CREATED) // 🟢 201 Created
                 .body(new AgentResponse(
@@ -73,66 +79,5 @@ public class ClientService {
                         "Client added successfully"
                 ));
     }
-
-
-
-
-//    public AgentResponse addClientByAgent(AgentRequest agentRequest) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String agentMobileNo = authentication.getName();  //  Get logged-in agent's mobile number
-//
-//       // logger.info("Authenticated Agent Mobile Number: {}", agentMobileNo);
-//
-//        // Fetch agent from database using logged-in mobile number
-//        Users agent = userRepository.findByMobileNo(agentMobileNo)
-//                .orElseThrow(() -> {
-//                    logger.error("Agent not found for mobile number: {}", agentMobileNo);
-//                    return new RuntimeException("Agent not found");
-//                });
-//
-//        //logger.info("Fetched Agent Details: Name = {}, Role = {}", agent.getName(), agent.getRole());
-//
-//        // Ensure user has the correct role
-//        if (!agent.getRole().equals(login.Register.loginRegister.Enum.Roles.Agent)) {
-//            //logger.error("Unauthorized Access: User {} is not an Agent", agent.getMobileNo());
-//            return new AgentResponse(null,null,null,0,0,0,null,false,"Unathorized access : this user is not Agent");
-//        }
-//
-//        // Log received client details
-//        //logger.info("Received Client Data: {}", agentRequest);
-//
-//        // Create Client object
-//        Client client = new Client();
-//        client.setName(agentRequest.getName());
-//        client.setMobileNo(agentRequest.getMobileNo());
-//        client.setAddress(agentRequest.getAddress());
-//        client.setLoanAmount(agentRequest.getLoanAmount());
-//        client.setDurationMonths(agentRequest.getDurationMonth());
-//        client.setInterestRate(agentRequest.getInterestRate());
-//        client.setLoanDate(LocalDate.now());
-//        client.setAgent(agent);
-//
-//        try {
-//            logger.info("Saving Client to Database: {}", client);
-//            Client savedClient = clientRepository.save(client);
-//            logger.info("Client successfully saved with ID: {}", savedClient.getId());
-//            logger.info("Client saved successfully!");
-//        } catch (Exception e) {
-//            logger.error("Error while saving client: {}", e.getMessage(), e);
-//            throw new RuntimeException("Failed to add client");
-//        }
-//
-//        return new AgentResponse(
-//                client.getName(),
-//                client.getMobileNo(),
-//                client.getAddress(),
-//                client.getLoanAmount(),
-//                client.getDurationMonths(),
-//                client.getInterestRate(),
-//                client.getLoanDate(),
-//                true,
-//                "Client added successfully"
-//        );
-//    }
 
 }

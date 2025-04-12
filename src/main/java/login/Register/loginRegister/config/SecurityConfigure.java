@@ -42,11 +42,17 @@ public class SecurityConfigure {
                 .csrf(csrf-> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // login/register open to all
-                        .requestMatchers("/client/**").hasRole("Agent") //only agent
-                        .requestMatchers("/images/upload").authenticated()
-                        .requestMatchers("/admin/**").hasRole("Admin")
-                        .requestMatchers("/agent/**").hasAnyRole("Agent", "Admin")
-                        .requestMatchers("/client/**").hasAnyRole("Client", "Agent", "Admin")
+                        .requestMatchers("/client/**").hasRole("AGENT") //only agent
+                        .requestMatchers("/images/upload").authenticated() //Only logged-in users
+                        .requestMatchers("/admin/**").hasRole("ADMIN")  // Only Admins can access.
+                        .requestMatchers("/agent/**").hasAnyRole("AGENT", "ADMIN") // Both Agents & Admins can access.
+                        .requestMatchers("/clients/**").hasAnyRole("CLIENT", "AGENT", "ADMIN") //Clients, Agents, and Admins can access.
+                        .requestMatchers("client/emi/**").hasRole( "AGENT")
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll() //  Swagger URLs ko allow karna hoga
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
