@@ -9,6 +9,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+//This class handles unauthenticated or unauthorized access to protected resources.
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
@@ -19,3 +20,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         writer.println("Access Denied !!" + authException.getMessage());
     }
 }
+    

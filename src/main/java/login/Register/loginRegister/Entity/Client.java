@@ -54,4 +54,11 @@ public class Client {
     //mappedBy = "client"	Relationship is owned by EMI class via its client field
     //cascade = CascadeType.ALL	Save/delete on client will also save/delete all related EMIs automatically
 
+
+    // new fields for paid and remaining amount
+    @Column(nullable = false)
+    private double paidAmount;
+
+    @Column(nullable = false)
+    private double remainingAmount;
 }

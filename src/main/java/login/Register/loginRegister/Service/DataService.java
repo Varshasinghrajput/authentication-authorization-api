@@ -95,9 +95,10 @@ public class DataService {
 
 
     // fetch a client's own profile
-    public Client getClientByMobileNo(String mobileNo) {
-        return clientRepository.findByMobileNo(mobileNo)
+    public Users getClientByMobileNo(String mobileNo) {
+        return userRepository.findByMobileNo(mobileNo)
                 .orElseThrow(()-> new UsernameNotFoundException("Client not found"));
+
     }
 
 }

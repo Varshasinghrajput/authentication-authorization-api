@@ -62,6 +62,10 @@ public class ClientService {
         client.setAgent(agent);
         client.setAgentMobileNo(agentMobileNo);
 
+        // paid and remaining
+        client.setPaidAmount(0);
+        client.setRemainingAmount(agentRequest.getLoanAmount());
+
         Client savedClient = clientRepository.save(client); // first save client
 
         emiService.generateEMI(savedClient);

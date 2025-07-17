@@ -2,6 +2,7 @@ package login.Register.loginRegister.DataAccessController;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import login.Register.loginRegister.Entity.Client;
+import login.Register.loginRegister.Entity.Users;
 import login.Register.loginRegister.Service.DataService;
 import login.Register.loginRegister.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class ClientDataController {
 //        return ResponseEntity.ok(dataService.getClientByMobileNo(userDetails.getUsername()));
 //    }
     @GetMapping("/client-profile/{clientMobileNo}")
-    public ResponseEntity<Client> getClient(@PathVariable String clientMobileNo) {
+    public ResponseEntity<Users> getClient(@PathVariable String clientMobileNo) {
         return ResponseEntity.ok(dataService.getClientByMobileNo(clientMobileNo));
     }
 

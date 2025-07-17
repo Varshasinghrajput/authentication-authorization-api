@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
+//JWT Validation and Authentication Setup
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -65,7 +65,26 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 logger.info("JWT validation failed!");
             }
         }
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response);  // Finally, forwards the request to the next controller.
     }
 }
 
+//        Incoming HTTP Request
+//              ↓
+//        [JwtRequestFilter]
+//              ↓
+//        Check if Authorization header has JWT
+//              ↓
+//        Extract JWT, parse username
+//              ↓
+//        Validate JWT & load user
+//              ↓
+//        If valid, set authentication in SecurityContext
+//              ↓
+//        Forward to Controller
+//
+//        If JWT missing or invalid:
+//              ↓
+//        Spring Security → [JwtAuthenticationEntryPoint]
+//              ↓
+//        Returns 401 Unauthorized + custom message

@@ -10,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,10 +31,17 @@ public class AgentDataController {
 //        return ResponseEntity.ok(dataService.getAllClientsByAgent(userDetails.getUsername()));
 //    }
 
-    @GetMapping("/clients/{agentMobileNo}")
-    public ResponseEntity<List<ClientDto>> getClientsForAgent(@PathVariable String agentMobileNo) {
-        return ResponseEntity.ok(dataService.getAllClientsByAgent(agentMobileNo));
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
+    @GetMapping("/clients")
+    public ResponseEntity<List<ClientDto>> getClientsForAgent(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(dataService.getAllClientsByAgent(userDetails.getUsername()));
     }
+
+//    @CrossOrigin(origins = "http://127.0.0.1:5500")
+//    @GetMapping("/clients/{agentMobileNo}")
+//    public ResponseEntity<List<ClientDto>> getClientsForAgent(@PathVariable String agentMobileNo) {
+//        return ResponseEntity.ok(dataService.getAllClientsByAgent(agentMobileNo));
+//    }
 
 
 }

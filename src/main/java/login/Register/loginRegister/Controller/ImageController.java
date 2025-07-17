@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/images")
+@PreAuthorize("hasRole('ADMIN')")
 @SecurityRequirement(name = "bearerAuth")
 public class ImageController {
 
@@ -42,7 +44,7 @@ public class ImageController {
                     .body(Map.of("error", "Invalid Agent MobileNo"));
         }
 
-        //fetch user from databse
+        //fetch user from database
         Users user = userRepository.findByMobileNo(userMobileNo).orElse(null);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

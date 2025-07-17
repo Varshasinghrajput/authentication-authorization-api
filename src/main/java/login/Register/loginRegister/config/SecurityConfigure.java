@@ -43,11 +43,11 @@ public class SecurityConfigure {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // login/register open to all
                         .requestMatchers("/client/**").hasRole("AGENT") //only agent
-                        .requestMatchers("/images/upload").authenticated() //Only logged-in users
+                        .requestMatchers("/images/upload").hasRole("ADMIN") //Only admin
                         .requestMatchers("/admin/**").hasRole("ADMIN")  // Only Admins can access.
                         .requestMatchers("/agent/**").hasAnyRole("AGENT", "ADMIN") // Both Agents & Admins can access.
                         .requestMatchers("/clients/**").hasAnyRole("CLIENT", "AGENT", "ADMIN") //Clients, Agents, and Admins can access.
-                        .requestMatchers("client/emi/**").hasRole( "AGENT")
+                        .requestMatchers("/client/emi/**").hasRole( "AGENT")
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",

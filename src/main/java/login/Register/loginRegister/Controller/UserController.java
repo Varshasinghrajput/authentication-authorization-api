@@ -6,9 +6,11 @@ import login.Register.loginRegister.Service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Configuration
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -34,12 +36,16 @@ public class UserController {
         return ResponseEntity.ok("All Users");
     }
 
+
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/register")
     public ResponseEntity<ResponseData_register> register(@RequestBody RequestData_register requestData) {
 
         return userService.register(requestData);
     }
 
+
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/login")
     public ResponseEntity<ResponseData_register> login(@RequestBody RequestData_register requestData) {
 
